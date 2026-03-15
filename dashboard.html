@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — EventSphere</title>
+  <meta name="description" content="Browse and book venues, entertainers, and catering for your next event." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+
+  <!-- ✦ AUTH GUARD: redirect to index.html if not logged in ✦ -->
+  <script>
+    (async () => {
+      try {
+        const res = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
+        if (!res.ok) { window.location.replace('index.html'); }
+      } catch {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body class="dashboard-body">
+
+  <!-- ===== DASHBOARD NAVBAR ===== -->
+  <nav class="navbar navbar--dashboard scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✦</span> EventSphere
+      </a>
+      <div class="nav-actions">
+        <a href="my_events.html" class="btn btn-ghost">My Bookings</a>
+        <span class="dash-user-greeting" id="userGreeting">Welcome back 👋</span>
+        <button class="btn btn-ghost" id="logoutBtn">Log Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== DASHBOARD SHELL ===== -->
+  <div class="dash-layout">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="dash-sidebar" id="sidebar">
+      <p class="sidebar-label">Browse</p>
+      <button class="sidebar-item active" data-filter="all" id="filterAll">
+        <span class="si-icon">🌟</span> All Services
+      </button>
+      <button class="sidebar-item" data-filter="venue">
+        <span class="si-icon">🏛️</span> Venues
+      </button>
+      <button class="sidebar-item" data-filter="entertainer">
+        <span class="si-icon">🎤</span> Entertainers
+      </button>
+      <button class="sidebar-item" data-filter="catering">
+        <span class="si-icon">🍽️</span> Catering
+      </button>
+    </aside>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="dash-main" id="dashMain">
+
+      <!-- Header row -->
+      <div class="dash-header">
+        <div>
+          <h1 class="dash-title">Discover Services</h1>
+          <p class="dash-subtitle" id="dashSubtitle">Showing all available services</p>
+        </div>
+        <div class="dash-search-wrap">
+          <input
+            type="search"
+            id="searchInput"
+            class="dash-search"
+            placeholder="🔍  Search services…"
+            aria-label="Search services"
+          />
+        </div>
+      </div>
+
+      <!-- Status banners -->
+      <div class="dash-state" id="dashLoading">
+        <div class="spinner-ring"></div>
+        <p>Loading services…</p>
+      </div>
+      <div class="dash-state hidden" id="dashEmpty">
+        <span class="dash-state-icon">🔍</span>
+        <p>No services matched your search.</p>
+      </div>
+      <div class="dash-state hidden" id="dashError">
+        <span class="dash-state-icon">⚠️</span>
+        <p id="dashErrorMsg">Could not load services. Please try again.</p>
+        <button class="btn btn-primary" id="retryBtn" style="margin-top:16px;">Retry</button>
+      </div>
+
+      <!-- Services grid -->
+      <div class="services-grid hidden" id="servicesGrid" role="list"></div>
+
+    </main>
+  </div>
+
+  <!-- ===== BOOK NOW MODAL ===== -->
+  <div class="modal-overlay" id="bookingOverlay" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle">
+    <div class="modal" id="bookingModal">
+      <button class="modal-close" id="bookingCloseBtn" aria-label="Close">&times;</button>
+      <h2 class="modal-title" id="bookModalTitle">Book Service</h2>
+      <p class="modal-subtitle" id="bookModalSubtitle"></p>
+
+      <div class="modal-feedback" id="bookingFeedback" role="alert" aria-live="polite"></div>
+
+      <form class="auth-form" id="bookingForm" novalidate>
+        <div class="form-group">
+          <label for="eventDate">Event Date</label>
+          <input type="date" id="eventDate" name="event_date" required />
+        </div>
+        <input type="hidden" id="bookingServiceId" name="service_id" />
+        <button type="submit" class="btn btn-primary btn-full" id="bookSubmitBtn">
+          <span class="btn-text">Confirm Booking</span>
+          <span class="btn-spinner" hidden></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

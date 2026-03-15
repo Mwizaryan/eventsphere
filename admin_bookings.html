@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Bookings — Admin — EventSphere</title>
+  <meta name="description" content="Manage customer bookings and update their status." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/admin_bookings.css" />
+
+  <!-- ✦ AUTH GUARD ✦ -->
+  <script>
+    (async () => {
+      try {
+        const res = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
+        if (!res.ok) { window.location.replace('index.html'); }
+      } catch {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body class="dashboard-body">
+
+  <!-- ===== ADMIN NAVBAR ===== -->
+  <nav class="navbar navbar--dashboard scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✦</span> EventSphere <span class="admin-badge">ADMIN</span>
+      </a>
+      <div class="nav-actions">
+        <a href="admin.html" class="btn btn-ghost text-sm">Add Service</a>
+        <a href="admin_bookings.html" class="btn btn-ghost text-sm active">Manage Bookings</a>
+        <button class="btn btn-ghost text-sm" id="logoutBtn">Log Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== ADMIN MAIN ===== -->
+  <main class="admin-bookings-container">
+    <div class="admin-header">
+      <h1 class="dash-title">Booking Management</h1>
+      <p class="dash-subtitle">View and update the status of all customer event bookings.</p>
+    </div>
+
+    <!-- State Banners -->
+    <div class="dash-state" id="adminLoading">
+      <div class="spinner-ring"></div>
+      <p>Loading all bookings…</p>
+    </div>
+    <div class="dash-state hidden" id="adminEmpty">
+      <span class="dash-state-icon">📅</span>
+      <p>No bookings have been made yet.</p>
+    </div>
+    <div class="dash-state hidden" id="adminError">
+      <span class="dash-state-icon">⚠️</span>
+      <p>Failed to load bookings database.</p>
+      <button class="btn btn-primary" id="retryAdminBtn" style="margin-top:16px;">Retry</button>
+    </div>
+
+    <!-- Bookings Table Container -->
+    <div class="bookings-table-scroll hidden" id="bookingsArea">
+      <table class="admin-table" id="bookingsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Event Date</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsBody">
+          <!-- Dynamically filled -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/admin_bookings.js"></script>
+</body>
+</html>

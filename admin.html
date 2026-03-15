@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Add Service | EventSphere</title>
+  <meta name="description" content="Admin panel to add new venue, entertainer, or catering services to EventSphere." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar--dashboard scrolled">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✦</span> EventSphere
+        <span class="admin-badge">Admin</span>
+      </a>
+      <div class="nav-actions">
+        <a href="admin.html" class="btn btn-ghost text-sm active">Add Service</a>
+        <a href="admin_bookings.html" class="btn btn-ghost text-sm">Manage Bookings</a>
+        <button class="btn btn-ghost text-sm" id="logoutBtn">Log Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== ADMIN LAYOUT ===== -->
+  <div class="admin-layout">
+
+    <!-- ── LEFT: Form panel ── -->
+    <section class="admin-form-panel">
+      <div class="admin-panel-header">
+        <div class="admin-icon-wrap">
+          <span>⚙️</span>
+        </div>
+        <div>
+          <h1 class="admin-panel-title">Add New Service</h1>
+          <p class="admin-panel-subtitle">Publish a venue, entertainer, or catering option to the marketplace.</p>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="admin-feedback hidden" id="adminFeedback" role="alert" aria-live="polite"></div>
+
+      <!-- Form -->
+      <form class="admin-form" id="addServiceForm" novalidate>
+
+        <!-- Category selector -->
+        <div class="form-group">
+          <label>Category <span class="required-star">*</span></label>
+          <div class="category-selector" id="categorySelector" role="radiogroup" aria-label="Service category">
+            <button type="button" class="cat-btn" data-value="venue" id="catVenue">
+              <span class="cat-btn-icon">🏛️</span>
+              <span class="cat-btn-label">Venue</span>
+            </button>
+            <button type="button" class="cat-btn" data-value="entertainer" id="catEntertainer">
+              <span class="cat-btn-icon">🎤</span>
+              <span class="cat-btn-label">Entertainer</span>
+            </button>
+            <button type="button" class="cat-btn" data-value="catering" id="catCatering">
+              <span class="cat-btn-icon">🍽️</span>
+              <span class="cat-btn-label">Catering</span>
+            </button>
+          </div>
+          <input type="hidden" id="categoryValue" name="category" required />
+          <p class="field-error hidden" id="catError">Please select a category.</p>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group">
+          <label for="serviceTitle">
+            Service Title <span class="required-star">*</span>
+          </label>
+          <input
+            type="text"
+            id="serviceTitle"
+            name="title"
+            placeholder="e.g. The Grand Ballroom at Rosewood"
+            maxlength="255"
+            required
+          />
+          <p class="field-hint">Max 255 characters.</p>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="serviceDesc">Description</label>
+          <textarea
+            id="serviceDesc"
+            name="description"
+            rows="4"
+            placeholder="Describe what makes this service special — capacity, style, unique features…"
+          ></textarea>
+        </div>
+
+        <!-- Price -->
+        <div class="form-group">
+          <label for="servicePrice">
+            Base Price (USD) <span class="required-star">*</span>
+          </label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">$</span>
+            <input
+              type="number"
+              id="servicePrice"
+              name="price"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Image URL -->
+        <div class="form-group">
+          <label for="serviceImage">Image URL <span class="field-optional">(optional)</span></label>
+          <input
+            type="url"
+            id="serviceImage"
+            name="image_url"
+            placeholder="https://example.com/image.jpg"
+          />
+          <!-- Live image preview -->
+          <div class="img-preview-wrap hidden" id="imgPreviewWrap">
+            <img id="imgPreview" src="" alt="Image preview" class="img-preview" />
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="form-actions">
+          <button type="reset" class="btn btn-outline" id="resetBtn">Clear Form</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span class="btn-text">✦ Add Service</span>
+            <span class="btn-spinner" hidden></span>
+          </button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ── RIGHT: Preview panel ── -->
+    <aside class="admin-preview-panel" id="previewPanel">
+      <p class="preview-label">Live Preview</p>
+      <div class="preview-card" id="previewCard">
+        <div class="preview-card-img placeholder" id="previewImg">✦</div>
+        <div class="preview-card-body">
+          <span class="svc-card-category preview-cat" id="previewCat">Category</span>
+          <h3 class="preview-title" id="previewTitle">Service title will appear here</h3>
+          <p class="preview-desc" id="previewDesc">Description preview will appear here as you type…</p>
+          <div class="preview-footer">
+            <span class="preview-price" id="previewPrice">$0.00</span>
+            <button class="btn btn-primary" style="pointer-events:none;opacity:0.6;" tabindex="-1">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent additions list -->
+      <div class="recent-wrap" id="recentWrap">
+        <p class="preview-label" style="margin-top:32px;">Recently Added</p>
+        <ul class="recent-list" id="recentList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

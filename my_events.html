@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Events — EventSphere</title>
+  <meta name="description" content="Manage and view your upcoming event bookings on EventSphere." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/my_events.css" />
+
+  <!-- ✦ AUTH GUARD: redirect to index.html if not logged in ✦ -->
+  <script>
+    (async () => {
+      try {
+        const res = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
+        if (!res.ok) { window.location.replace('index.html'); }
+      } catch {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body class="dashboard-body">
+
+  <!-- ===== DASHBOARD NAVBAR ===== -->
+  <nav class="navbar navbar--dashboard scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✦</span> EventSphere
+      </a>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-ghost">Browse Services</a>
+        <button class="btn btn-ghost" id="logoutBtn">Log Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MY EVENTS MAIN ===== -->
+  <main class="events-container">
+    <div class="events-header">
+      <h1 class="dash-title">My Bookings</h1>
+      <p class="dash-subtitle">Manage your upcoming and past event services.</p>
+    </div>
+
+    <!-- State Banners -->
+    <div class="dash-state" id="eventsLoading">
+      <div class="spinner-ring"></div>
+      <p>Fetching your bookings…</p>
+    </div>
+    <div class="dash-state hidden" id="eventsEmpty">
+      <span class="dash-state-icon">📅</span>
+      <p>You haven't booked any services yet.</p>
+      <a href="dashboard.html" class="btn btn-primary" style="margin-top:16px;">Browse Services</a>
+    </div>
+    <div class="dash-state hidden" id="eventsError">
+      <span class="dash-state-icon">⚠️</span>
+      <p>Failed to load your bookings.</p>
+      <button class="btn btn-primary" id="retryEventsBtn" style="margin-top:16px;">Retry</button>
+    </div>
+
+    <!-- Bookings List -->
+    <div class="bookings-list hidden" id="bookingsList"></div>
+  </main>
+
+  <script src="js/my_events.js"></script>
+</body>
+</html>

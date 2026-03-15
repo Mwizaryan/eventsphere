@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventSphere — Your Perfect Event, Fully Staffed</title>
+  <meta name="description" content="Discover and book luxury venues, world-class entertainers, and exquisite catering for your perfect event with EventSphere." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✦</span> EventSphere
+      </a>
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="openLoginBtn">Log In</button>
+        <button class="btn btn-primary" id="openRegisterBtn">Sign Up</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">✦ Premium Event Planning</p>
+      <h1 class="hero-headline">Your Perfect Event,<br /><span class="gradient-text">Fully Staffed.</span></h1>
+      <p class="hero-subtext">
+        Seamlessly book top-tier venues, world-class entertainers, and exquisite catering — all in one place.
+      </p>
+      <div class="hero-cta-group">
+        <button class="btn btn-primary btn-xl" id="heroGetStartedBtn">Get Started</button>
+        <a href="#offers" class="btn btn-outline btn-xl">Explore Services</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT WE OFFER ===== -->
+  <section class="offers" id="offers">
+    <div class="section-container">
+      <p class="section-eyebrow">What We Offer</p>
+      <h2 class="section-title">Everything Your Event Needs</h2>
+      <p class="section-subtitle">Choose from a curated selection of premium services, handpicked for quality and excellence.</p>
+
+      <div class="cards-grid">
+
+        <!-- Card 1: Venues -->
+        <div class="service-card" id="card-venues">
+          <div class="card-icon-wrap" style="--icon-color: #f0a500;">
+            <span class="card-icon">🏛️</span>
+          </div>
+          <h3 class="card-title">Luxury Venues</h3>
+          <p class="card-desc">
+            From intimate garden estates to grand ballrooms — discover handpicked spaces that set the perfect stage for your event.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Ballrooms</span>
+            <span class="tag">Gardens</span>
+            <span class="tag">Rooftops</span>
+          </div>
+          <a href="#" class="card-link">Browse Venues <span>→</span></a>
+        </div>
+
+        <!-- Card 2: Entertainers -->
+        <div class="service-card service-card--featured" id="card-entertainers">
+          <div class="card-featured-badge">Most Popular</div>
+          <div class="card-icon-wrap" style="--icon-color: #a855f7;">
+            <span class="card-icon">🎤</span>
+          </div>
+          <h3 class="card-title">Top-Tier Entertainers</h3>
+          <p class="card-desc">
+            Elevate any gathering with live bands, DJs, comedians, and performers who know how to captivate a crowd.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Live Bands</span>
+            <span class="tag">DJs</span>
+            <span class="tag">Speakers</span>
+          </div>
+          <a href="#" class="card-link">Browse Entertainers <span>→</span></a>
+        </div>
+
+        <!-- Card 3: Catering -->
+        <div class="service-card" id="card-catering">
+          <div class="card-icon-wrap" style="--icon-color: #10b981;">
+            <span class="card-icon">🍽️</span>
+          </div>
+          <h3 class="card-title">Exquisite Catering</h3>
+          <p class="card-desc">
+            Delight your guests with gourmet menus crafted by expert chefs — from elegant cocktail parties to full banquets.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Gourmet</span>
+            <span class="tag">Buffets</span>
+            <span class="tag">Fine Dining</span>
+          </div>
+          <a href="#" class="card-link">Browse Catering <span>→</span></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS STRIP ===== -->
+  <section class="stats-strip">
+    <div class="stats-container">
+      <div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Venues Available</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-number">1,200+</span><span class="stat-label">Entertainers Listed</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-number">300+</span><span class="stat-label">Catering Partners</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-number">98%</span><span class="stat-label">Client Satisfaction</span></div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p class="footer-logo">✦ EventSphere</p>
+      <p class="footer-copy">© 2026 EventSphere. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ============================= -->
+  <!-- ===== AUTH MODAL OVERLAY ===== -->
+  <!-- ============================= -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="authModal">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close">&times;</button>
+
+      <!-- Modal Tab Bar -->
+      <div class="modal-tabs">
+        <button class="modal-tab active" id="tabLogin" data-tab="login">Log In</button>
+        <button class="modal-tab" id="tabRegister" data-tab="register">Sign Up</button>
+      </div>
+
+      <!-- Feedback Message -->
+      <div class="modal-feedback" id="modalFeedback" role="alert" aria-live="polite"></div>
+
+      <!-- ===== LOGIN FORM ===== -->
+      <form class="auth-form" id="loginForm" novalidate>
+        <h2 class="modal-title" id="modalTitle">Welcome back</h2>
+        <p class="modal-subtitle">Log in to manage your bookings.</p>
+
+        <div class="form-group">
+          <label for="loginEmail">Email address</label>
+          <input type="email" id="loginEmail" name="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="loginSubmitBtn">
+          <span class="btn-text">Log In</span>
+          <span class="btn-spinner" hidden></span>
+        </button>
+        <p class="form-switch">Don't have an account? <a href="#" id="switchToRegister">Sign up</a></p>
+      </form>
+
+      <!-- ===== REGISTER FORM ===== -->
+      <form class="auth-form hidden" id="registerForm" novalidate>
+        <h2 class="modal-title">Create your account</h2>
+        <p class="modal-subtitle">Join thousands planning their perfect events.</p>
+
+        <div class="form-group">
+          <label for="registerName">Full name</label>
+          <input type="text" id="registerName" name="name" placeholder="Jane Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">Email address</label>
+          <input type="email" id="registerEmail" name="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Password <span class="hint">(min. 8 characters)</span></label>
+          <input type="password" id="registerPassword" name="password" placeholder="Create a strong password" required minlength="8" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="registerSubmitBtn">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-spinner" hidden></span>
+        </button>
+        <p class="form-switch">Already have an account? <a href="#" id="switchToLogin">Log in</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
