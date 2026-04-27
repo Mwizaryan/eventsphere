@@ -118,15 +118,54 @@ try {
         ':status'     => 'pending',
     ]);
 
+    $bookingId = (int) $pdo->lastInsertId();
+
     http_response_code(201);
     echo json_encode([
         'success'    => true,
         'message'    => 'Booking confirmed!',
-        'booking_id' => (int) $pdo->lastInsertId(),
+        'booking_id' => $bookingId,
         'service'    => $service['title'],
         'event_date' => $eventDate,
         'status'     => 'pending',
     ]);
+
+    // ── EMAIL NOTIFICATION (Post-Response) ──────────────────────────
+    try {
+        require_once __DIR__ . '/mailer.php';
+
+        // Get user details and service price for the email
+        $stmtDetails = $pdo->prepare('
+            SELECT u.name, u.email, s.title, s.price 
+            FROM users u, services s 
+            WHERE u.id = :user_id AND s.id = :service_id
+        ');
+        $stmtDetails->execute([':user_id' => $userId, ':service_id' => $serviceId]);
+        $details = $stmtDetails->fetch();
+
+        if ($details) {
+            $formattedPrice = number_format($details['price'], 2);
+            $heading = "Booking Confirmation — #{$bookingId}";
+            $content = "
+                <p>Hello <strong>{$details['name']}</strong>,</p>
+                <p>Your booking for <strong>{$details['title']}</strong> has been received and is currently <strong>PENDING</strong>.</p>
+                <p><strong>Booking Details:</strong></p>
+                <ul>
+                    <li><strong>Booking ID:</strong> #{$bookingId}</li>
+                    <li><strong>Service:</strong> {$details['title']}</li>
+                    <li><strong>Event Date:</strong> {$eventDate}</li>
+                    <li><strong>Total Price:</strong> \${$formattedPrice}</li>
+                </ul>
+                <p>We will notify you once an administrator has reviewed and confirmed your booking.</p>
+                <a href='#' class='btn'>View Dashboard</a>
+            ";
+
+            $htmlBody = emailTemplate($heading, $content);
+            sendBookingEmail($details['name'], $details['email'], "EventSphere Booking Received: #{$bookingId}", $htmlBody);
+        }
+    } catch (\Exception $e) {
+        error_log("Email Notification Failed for Booking #{$bookingId}: " . $e->getMessage());
+    }
 } catch (\PDOException $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Failed to create booking. Please try again.']);

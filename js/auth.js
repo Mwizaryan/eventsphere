@@ -3,6 +3,7 @@
  * Handles the Login / Register modal lifecycle and
  * communicates with backend/login.php & backend/register.php.
  * On successful login, redirects to dashboard.html.
+ * Also manages navbar state (auth buttons vs user nav links) and admin link visibility.
  */
 
 (() => {
@@ -24,6 +25,41 @@
   const heroGetStarted  = document.getElementById('heroGetStartedBtn');
   const openLoginBtn    = document.getElementById('openLoginBtn');
   const openRegisterBtn = document.getElementById('openRegisterBtn');
+  
+  // Index.html navbar refs
+  const authButtons     = document.getElementById('authButtons');
+  const userNavLinks    = document.getElementById('userNavLinks');
+  const adminNavLinks   = document.getElementById('adminNavLinks');
+  const logoutBtn       = document.getElementById('logoutBtn');
+  
+  // Check auth status on page load (for index.html navbar)
+  if (authButtons && userNavLinks) {
+    checkAuthStatus();
+  }
+  
+  async function checkAuthStatus() {
+    try {
+      const res = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
+      const data = await res.json();
+      
+      if (data.logged_in) {
+        // Show user nav, hide auth buttons
+        authButtons.style.display = 'none';
+        userNavLinks.style.display = 'flex';
+        
+        // Show/hide admin links based on is_admin
+        if (adminNavLinks) {
+          if (data.user?.is_admin) {
+            adminNavLinks.style.display = '';
+            localStorage.setItem('eventsphere_is_admin', 'true');
+          } else {
+            adminNavLinks.style.display = 'none';
+            localStorage.removeItem('eventsphere_is_admin');
+          }
+        }
+      }
+    } catch { /* ignore errors */ }
+  }
 
   // Navbar scroll effect
   const navbar = document.getElementById('navbar');
@@ -92,6 +128,16 @@
     feedback.textContent = '';
     feedback.className = 'modal-feedback';
   }
+  
+  // ─── LOGOUT HANDLER (for index.html) ─────────────────────────
+  logoutBtn?.addEventListener('click', async () => {
+    localStorage.removeItem('eventsphere_is_admin');
+    try {
+      await fetch('backend/logout.php', { credentials: 'same-origin' });
+    } finally {
+      window.location.reload();
+    }
+  });
 
   // ─── LOADING STATE ───────────────────────────────────────────
   function setLoading(btn, isLoading) {
@@ -133,6 +179,13 @@
       const { ok, data } = await postJSON('backend/login.php', { email, password });
 
       if (ok && data.success) {
+        // Store admin status in localStorage for nav rendering
+        if (data.user?.is_admin) {
+          localStorage.setItem('eventsphere_is_admin', 'true');
+        } else {
+          localStorage.removeItem('eventsphere_is_admin');
+        }
+        
         showFeedback('Login successful! Redirecting…', 'success');
         setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
       } else {

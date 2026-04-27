@@ -6,6 +6,19 @@
 (() => {
   'use strict';
 
+  // ─── ADMIN GUARD ──────────────────────────────────────────────
+  (async () => {
+    try {
+      const res  = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
+      const data = await res.json();
+      if (!data.logged_in || !data.user?.is_admin) {
+        window.location.replace('dashboard.html');
+      }
+    } catch {
+      window.location.replace('index.html');
+    }
+  })();
+
   // ─── DOM REFS ────────────────────────────────────────────────
   const tableArea     = document.getElementById('bookingsArea');
   const tbody         = document.getElementById('bookingsBody');

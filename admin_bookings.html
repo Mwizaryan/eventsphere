@@ -12,12 +12,16 @@
   <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/admin_bookings.css" />
 
-  <!-- ✦ AUTH GUARD ✦ -->
+  <!-- ✦ ADMIN GUARD: redirect if not logged in or not admin ✦ -->
   <script>
     (async () => {
       try {
         const res = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
-        if (!res.ok) { window.location.replace('index.html'); }
+        if (!res.ok) { window.location.replace('index.html'); return; }
+        const data = await res.json();
+        if (!data.logged_in || !data.user?.is_admin) {
+          window.location.replace('dashboard.html');
+        }
       } catch {
         window.location.replace('index.html');
       }

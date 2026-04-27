@@ -19,8 +19,23 @@
         <span class="logo-icon">✦</span> EventSphere
       </a>
       <div class="nav-actions">
-        <button class="btn btn-ghost" id="openLoginBtn">Log In</button>
-        <button class="btn btn-primary" id="openRegisterBtn">Sign Up</button>
+        <!-- Auth links (shown when logged out) -->
+        <div id="authButtons">
+          <button class="btn btn-ghost" id="openLoginBtn">Log In</button>
+          <button class="btn btn-primary" id="openRegisterBtn">Sign Up</button>
+        </div>
+        <!-- Logged in user links (hidden by default, shown via JS) -->
+        <div id="userNavLinks" class="hidden" style="display: none; align-items: center; gap: 8px;">
+          <!-- Admin links (shown only to admin users) -->
+          <div class="admin-nav-links hidden" id="adminNavLinks" style="display: none;">
+            <a href="admin.html" class="btn btn-ghost text-sm">
+              <span style="margin-right:4px;">⚙️</span>Admin
+            </a>
+          </div>
+          <a href="dashboard.html" class="btn btn-ghost">Browse Services</a>
+          <a href="my_events.html" class="btn btn-ghost">My Bookings</a>
+          <button class="btn btn-ghost" id="logoutBtn">Log Out</button>
+        </div>
       </div>
     </div>
   </nav>

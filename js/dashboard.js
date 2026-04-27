@@ -53,6 +53,20 @@
       const data = await res.json();
       if (data.logged_in && data.user?.name) {
         userGreeting.textContent = `Welcome back, ${data.user.name.split(' ')[0]} 👋`;
+        
+        // Show/hide admin nav links based on is_admin status
+        const adminNavLinks = document.getElementById('adminNavLinks');
+        if (adminNavLinks) {
+          if (data.user.is_admin) {
+            adminNavLinks.classList.remove('hidden');
+            adminNavLinks.style.display = 'flex';
+            localStorage.setItem('eventsphere_is_admin', 'true');
+          } else {
+            adminNavLinks.classList.add('hidden');
+            adminNavLinks.style.display = 'none';
+            localStorage.removeItem('eventsphere_is_admin');
+          }
+        }
       }
     } catch { /* non-critical */ }
   }

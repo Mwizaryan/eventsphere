@@ -3,22 +3,13 @@
  * add_service.php — Inserts a new service into the services table.
  * Accepts POST: category, title, description, price, image_url (optional).
  * Supports JSON body and application/x-www-form-urlencoded.
+ * Requires admin access.
  */
 
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST');
-
-session_start();
-
-// ── AUTH GUARD ────────────────────────────────────────────────
-// In production you'd also check an `is_admin` flag on the session.
-// For this local setup we simply require a logged-in session.
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Unauthorized. Please log in.']);
-    exit;
-}
+// ── ADMIN GUARD ───────────────────────────────────────────────
+// Checks session, verifies user exists, and confirms is_admin = 1
+// Returns 401/403 JSON error and exits if not authorized.
+require_once __DIR__ . '/admin_guard.php';
 
 // ── METHOD CHECK ─────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

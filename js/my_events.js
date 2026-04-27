@@ -18,8 +18,32 @@
   init();
 
   async function init() {
+    await loadUserInfo();
     await loadBookings();
     attachEventListeners();
+  }
+
+  // ─── USER INFO ───────────────────────────────────────────────
+  async function loadUserInfo() {
+    try {
+      const res  = await fetch('backend/check_auth.php', { credentials: 'same-origin' });
+      const data = await res.json();
+      if (data.logged_in) {
+        // Show/hide admin nav links based on is_admin status
+        const adminNavLinks = document.getElementById('adminNavLinks');
+        if (adminNavLinks) {
+          if (data.user?.is_admin) {
+            adminNavLinks.classList.remove('hidden');
+            adminNavLinks.style.display = 'flex';
+            localStorage.setItem('eventsphere_is_admin', 'true');
+          } else {
+            adminNavLinks.classList.add('hidden');
+            adminNavLinks.style.display = 'none';
+            localStorage.removeItem('eventsphere_is_admin');
+          }
+        }
+      }
+    } catch { /* non-critical */ }
   }
 
   // ─── LOAD BOOKINGS ───────────────────────────────────────────

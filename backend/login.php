@@ -38,9 +38,9 @@ if (empty($email) || empty($password)) {
     exit;
 }
 
-// --- Fetch user by email ---
+// --- Fetch user by email (including is_admin flag) ---
 try {
-    $stmt = $pdo->prepare('SELECT id, name, email, password_hash FROM users WHERE email = :email');
+    $stmt = $pdo->prepare('SELECT id, name, email, password_hash, is_admin FROM users WHERE email = :email');
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch();
 } catch (\PDOException $e) {
@@ -65,14 +65,16 @@ session_regenerate_id(true);
 
 $_SESSION['user_id']   = $user['id'];
 $_SESSION['user_name'] = $user['name'];
+$_SESSION['is_admin']  = (int) $user['is_admin'];
 
 echo json_encode([
     'success' => true,
     'message' => 'Login successful.',
     'user'    => [
-        'id'    => (int) $user['id'],
-        'name'  => $user['name'],
-        'email' => $user['email'],
+        'id'       => (int) $user['id'],
+        'name'     => $user['name'],
+        'email'    => $user['email'],
+        'is_admin' => (bool) $user['is_admin'],
     ],
 ]);
 ?>

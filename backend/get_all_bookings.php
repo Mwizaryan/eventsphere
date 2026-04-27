@@ -2,19 +2,13 @@
 /**
  * get_all_bookings.php — Returns all bookings in the system for admin management.
  * Joins bookings with users and services to provide complete information.
+ * Requires admin access.
  */
 
-header('Content-Type: application/json');
-
-session_start();
-
-// ── AUTH GUARD ────────────────────────────────────────────────
-// In a real app, we'd check for an is_admin flag here.
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Unauthorized. Please log in.']);
-    exit;
-}
+// ── ADMIN GUARD ───────────────────────────────────────────────
+// Checks session, verifies user exists, and confirms is_admin = 1
+// Returns 401/403 JSON error and exits if not authorized.
+require_once __DIR__ . '/admin_guard.php';
 
 require_once __DIR__ . '/db.php';
 
