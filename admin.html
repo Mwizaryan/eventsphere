@@ -63,6 +63,7 @@
 
       <!-- Form -->
       <form class="admin-form" id="addServiceForm" novalidate>
+        <input type="hidden" id="serviceId" name="service_id" />
 
         <!-- Category selector -->
         <div class="form-group">
@@ -149,6 +150,7 @@
         <!-- Submit -->
         <div class="form-actions">
           <button type="reset" class="btn btn-outline" id="resetBtn">Clear Form</button>
+          <button type="button" class="btn btn-ghost hidden" id="cancelEditBtn">Cancel Edit</button>
           <button type="submit" class="btn btn-primary" id="submitBtn">
             <span class="btn-text">✦ Add Service</span>
             <span class="btn-spinner" hidden></span>
@@ -156,6 +158,41 @@
         </div>
 
       </form>
+      <section class="services-admin-section" aria-labelledby="manageServicesTitle">
+        <div class="services-admin-header">
+          <div>
+            <p class="preview-label">Manage Services</p>
+            <h2 class="services-admin-title" id="manageServicesTitle">Existing Marketplace Listings</h2>
+          </div>
+          <button type="button" class="btn btn-outline" id="refreshServicesBtn">Refresh List</button>
+        </div>
+
+        <div class="services-admin-state" id="servicesLoading">
+          <div class="spinner-ring"></div>
+          <p>Loading servicesâ€¦</p>
+        </div>
+        <div class="services-admin-state hidden" id="servicesEmpty">
+          <p>No services found yet.</p>
+        </div>
+        <div class="services-admin-state hidden" id="servicesError">
+          <p id="servicesErrorMsg">Could not load services.</p>
+        </div>
+
+        <div class="services-table-wrap hidden" id="servicesTableWrap">
+          <table class="services-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Service</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="servicesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
     <!-- ── RIGHT: Preview panel ── -->

@@ -233,6 +233,96 @@
   padding-top: 8px;
 }
 
+.services-admin-section {
+  margin-top: 48px;
+  max-width: 760px;
+}
+
+.services-admin-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.services-admin-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.services-admin-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.03);
+  color: var(--color-text-muted);
+}
+
+.services-table-wrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+}
+
+.services-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.services-table th,
+.services-table td {
+  padding: 16px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+.services-table th {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: rgba(255,255,255,0.04);
+}
+
+.services-table tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.service-row-title {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.service-row-desc {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.service-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-danger-soft {
+  background: rgba(239,68,68,0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239,68,68,0.28);
+}
+
+.btn-danger-soft:hover {
+  background: rgba(239,68,68,0.2);
+  color: #fff;
+}
+
 /* ── PREVIEW PANEL (right) ── */
 .admin-preview-panel {
   padding: 48px 32px;
@@ -370,10 +460,13 @@
   .admin-form-panel { padding: 36px 28px; border-right: none; border-bottom: 1px solid var(--color-border); }
   .admin-preview-panel { padding: 28px; position: static; }
   .category-selector { grid-template-columns: repeat(3, 1fr); }
+  .services-admin-header { align-items: stretch; flex-direction: column; }
 }
 
 @media (max-width: 480px) {
   .category-selector { grid-template-columns: 1fr; }
   .form-actions { flex-direction: column-reverse; }
   .form-actions .btn { width: 100%; }
+  .services-table th,
+  .services-table td { padding: 12px; }
 }

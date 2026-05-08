@@ -89,6 +89,7 @@
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
     const price   = parseFloat(booking.price).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    const canCancel = booking.status === 'pending';
 
     const card = document.createElement('div');
     card.className = 'booking-card';
@@ -110,6 +111,13 @@
       </div>
       <div class="booking-status-wrap">
         <span class="status-badge status-${booking.status}">${booking.status.toUpperCase()}</span>
+        ${canCancel ? `
+          <button
+            type="button"
+            class="btn btn-cancel-booking"
+            data-cancel-booking-id="${booking.id}"
+          >Cancel Booking</button>
+        ` : ''}
       </div>
     `;
 
@@ -126,6 +134,48 @@
 
   function attachEventListeners() {
     retryBtn?.addEventListener('click', loadBookings);
+
+    list?.addEventListener('click', async (event) => {
+      const cancelBtn = event.target.closest('[data-cancel-booking-id]');
+      if (!cancelBtn) return;
+
+      const bookingId = parseInt(cancelBtn.dataset.cancelBookingId || '0', 10);
+      if (!bookingId) return;
+
+      const confirmed = window.confirm('Are you sure you want to cancel this booking?');
+      if (!confirmed) return;
+
+      const originalText = cancelBtn.textContent;
+      cancelBtn.disabled = true;
+      cancelBtn.textContent = 'Cancelling...';
+
+      try {
+        const res = await fetch('backend/cancel_booking.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ booking_id: bookingId }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'Could not cancel booking.');
+        }
+
+        const card = cancelBtn.closest('.booking-card');
+        const badge = card?.querySelector('.status-badge');
+        if (badge) {
+          badge.className = 'status-badge status-cancelled';
+          badge.textContent = 'CANCELLED';
+        }
+
+        cancelBtn.remove();
+      } catch (err) {
+        cancelBtn.disabled = false;
+        cancelBtn.textContent = originalText;
+        window.alert(err.message || 'Could not cancel booking.');
+      }
+    });
     
     logoutBtn?.addEventListener('click', async () => {
       try {

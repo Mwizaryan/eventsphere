@@ -43,7 +43,6 @@
   async function init() {
     await loadUserInfo();
     await loadServices();
-    attachEventListeners();
   }
 
   // ─── USER INFO ───────────────────────────────────────────────
